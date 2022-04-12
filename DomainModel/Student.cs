@@ -1,5 +1,8 @@
-﻿namespace DomainModel
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DomainModel
 {
+    [Table("Student")]
     public class Student : Person
     {
         public double Average { get; set; }
