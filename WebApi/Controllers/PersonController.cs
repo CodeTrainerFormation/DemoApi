@@ -25,7 +25,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult RetrieveAllPeople()
         {
-            return Ok(people);
+            return Ok(this.context.People.ToList());
         }
 
         // GET : /Person/5
@@ -38,7 +38,7 @@ namespace WebApi.Controllers
                 return BadRequest();
 
             // get from database
-            var person = people.SingleOrDefault(p => p.PersonId == id);
+            var person = this.context.People.SingleOrDefault(p => p.PersonId == id);
 
             if (person == null)
                 return NotFound();
@@ -51,8 +51,8 @@ namespace WebApi.Controllers
         public IActionResult AddPerson(Person person)
         {
             // insert to db
-            person.PersonId = people.Last().PersonId + 1;
-            people.Add(person);
+            this.context.People.Add(person);
+            this.context.SaveChanges();
 
             return CreatedAtAction(nameof(RetrievePerson), new { id = person.PersonId }, person);
         }
@@ -65,10 +65,8 @@ namespace WebApi.Controllers
                 return BadRequest();
 
             // update person in db
-            var personToUpdate = people.SingleOrDefault(p => p.PersonId == id);
-            personToUpdate.FirstName = person.FirstName;
-            personToUpdate.LastName = person.LastName;
-            personToUpdate.Age = person.Age;
+            this.context.People.Update(person);
+            this.context.SaveChanges();
 
             return NoContent();
         }
@@ -77,13 +75,14 @@ namespace WebApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult RemovePerson(int id)
         {
-            var personToDelete = people.SingleOrDefault(p => p.PersonId == id);
+            var personToDelete = this.context.People.SingleOrDefault(p => p.PersonId == id);
 
             if (personToDelete == null)
                 return NotFound();
 
             // delete person in db
-            people.Remove(personToDelete);
+            this.context.People.Remove(personToDelete);
+            this.context.SaveChanges();
 
             return Ok(personToDelete);
         }
