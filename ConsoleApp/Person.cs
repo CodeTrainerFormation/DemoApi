@@ -1,7 +1,5 @@
-﻿namespace WebApi.Models
+﻿namespace ConsoleApp
 {
-    // DTO (Data Transfer Object)
-    // POCO (Plain Old CLR Object)
     public class Person
     {
         public int PersonId { get; set; }

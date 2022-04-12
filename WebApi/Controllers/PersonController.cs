@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebApi.Filters;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -49,6 +51,8 @@ namespace WebApi.Controllers
         }
 
         // GET : /Person/5
+        //[MyFilter]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public IActionResult RetrievePerson(int id)
         {

@@ -35,6 +35,7 @@ namespace WebApi
             //services.AddSingleton
 
 
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -59,7 +60,7 @@ namespace WebApi
 
             //app.UseMyMiddleware();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseStaticFiles();
 
