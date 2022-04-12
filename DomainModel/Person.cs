@@ -1,4 +1,4 @@
-﻿namespace WebApi.Models
+﻿namespace DomainModel
 {
     // DTO (Data Transfer Object)
     // POCO (Plain Old CLR Object)

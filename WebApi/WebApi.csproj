@@ -13,4 +13,8 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Dal\Dal.csproj" />
+  </ItemGroup>
+
 </Project>

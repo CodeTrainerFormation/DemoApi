@@ -1,4 +1,4 @@
-﻿using ConsoleApp;
+﻿using DomainModel;
 using Newtonsoft.Json;
 
 HttpClient httpClient = new HttpClient();

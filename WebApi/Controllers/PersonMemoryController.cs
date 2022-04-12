@@ -6,19 +6,41 @@ using System.Collections.Generic;
 using System.Linq;
 using WebApi.Filters;
 using DomainModel;
-using Dal;
 
 namespace WebApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class PersonController : ControllerBase
+    public class PersonMemoryController : ControllerBase
     {
-        private readonly SchoolContext context;
+        private static List<Person> people;
 
-        public PersonController(SchoolContext context)
+        static PersonMemoryController()
         {
-            this.context = context;
+            people = new List<Person>()
+            {
+                new Person()
+                {
+                    PersonId = 1,
+                    FirstName = "Ted",
+                    LastName = "Mosby",
+                    Age = 35
+                },
+                new Person()
+                {
+                    PersonId = 2,
+                    FirstName = "Barney",
+                    LastName = "Stinson",
+                    Age = 38
+                },
+                new Person()
+                {
+                    PersonId = 3,
+                    FirstName = "Lily",
+                    LastName = "Aldrin",
+                    Age = 36
+                }
+            };
         }
 
         // GET : /Person
