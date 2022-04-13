@@ -7,6 +7,8 @@ using System.Linq;
 using WebApi.Filters;
 using DomainModel;
 using Dal;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Controllers
 {
@@ -23,22 +25,23 @@ namespace WebApi.Controllers
 
         // GET : /Person
         [HttpGet]
-        public IActionResult RetrieveAllPeople()
+        public async Task<ActionResult<List<Person>>> RetrieveAllPeople()
         {
-            return Ok(this.context.People.ToList());
+            return Ok(await this.context.People.ToListAsync());
         }
 
         // GET : /Person/5
         //[MyFilter]
         //[Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
-        public IActionResult RetrievePerson(int id)
+        public async Task<IActionResult> RetrievePerson(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
             // get from database
-            var person = this.context.People.SingleOrDefault(p => p.PersonId == id);
+            //var person = this.context.People.SingleOrDefaultAsync(p => p.PersonId == id);
+            Person person = await this.context.People.FindAsync(id);
 
             if (person == null)
                 return NotFound();
@@ -48,41 +51,41 @@ namespace WebApi.Controllers
 
         // POST : /Person
         [HttpPost]
-        public IActionResult AddPerson(Person person)
+        public async Task<IActionResult> AddPerson(Person person)
         {
             // insert to db
-            this.context.People.Add(person);
-            this.context.SaveChanges();
+            await this.context.People.AddAsync(person);
+            await this.context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(RetrievePerson), new { id = person.PersonId }, person);
         }
 
         // PUT : /Person/5
         [HttpPut("{id}")]
-        public IActionResult UpdatePerson(int id, Person person)
+        public async Task<IActionResult> UpdatePerson(int id, Person person)
         {
             if(id != person.PersonId)
                 return BadRequest();
 
             // update person in db
             this.context.People.Update(person);
-            this.context.SaveChanges();
+            await this.context.SaveChangesAsync();
 
             return NoContent();
         }
 
         // DELETE : /Person/5
         [HttpDelete("{id}")]
-        public IActionResult RemovePerson(int id)
+        public async Task<IActionResult> RemovePerson(int id)
         {
-            var personToDelete = this.context.People.SingleOrDefault(p => p.PersonId == id);
+            var personToDelete = await this.context.People.SingleOrDefaultAsync(p => p.PersonId == id);
 
             if (personToDelete == null)
                 return NotFound();
 
             // delete person in db
             this.context.People.Remove(personToDelete);
-            this.context.SaveChanges();
+            await this.context.SaveChangesAsync();
 
             return Ok(personToDelete);
         }

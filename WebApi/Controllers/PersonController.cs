@@ -21,17 +21,33 @@ namespace WebApi.Controllers
             this.context = context;
         }
 
+        /// <summary>
+        /// Get people in db
+        /// </summary>
+        /// <returns>List of person</returns>
         // GET : /Person
+        //[Route("/People")]
+        //[HttpGet("/People")]
         [HttpGet]
+        //[Produces("application/json")]
         public IActionResult RetrieveAllPeople()
         {
             return Ok(this.context.People.ToList());
         }
 
+        /// <summary>
+        /// Get a person in db
+        /// </summary>
+        /// <returns>a person object</returns>
         // GET : /Person/5
         //[MyFilter]
         //[Authorize(Roles = "Admin")]
+        //[HttpGet("{id}/{test}")]
+        //[Route("{id}/{test}")]
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Person), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public IActionResult RetrievePerson(int id)
         {
             if (id <= 0)

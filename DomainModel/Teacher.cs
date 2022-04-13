@@ -5,6 +5,7 @@ namespace DomainModel
     [Table("Teacher")]
     public class Teacher : Person
     {
+        //[Column("Cours")]
         public string Discipline { get; set; }
         public int Salary { get; set; }
 

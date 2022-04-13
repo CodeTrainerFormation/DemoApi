@@ -46,6 +46,8 @@ namespace WebApi.Filters
     //    }
     //}
 
+    //[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Method)]
     public class MyFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)

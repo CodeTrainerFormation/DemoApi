@@ -12,7 +12,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using WebApi.Middlewares;
 using WebApi.Services;
@@ -42,15 +44,47 @@ namespace WebApi
             });
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
+                // indiquer le chemin du fichier de documentation
+                //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                //c.IncludeXmlComments(xmlPath);
+
+
+                c.SwaggerDoc("v1", new OpenApiInfo 
+                { 
+                    Title = "School Api", 
+                    Version = "v1",
+                    Contact = new OpenApiContact()
+                    {
+                        Name = "Admin",
+                        Email = "school@aspschool.lan"
+                    },
+                    Description = "api for students and teachers"
+                });
+            });
+
+            services.AddCors(setup =>
+            {
+                setup.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyHeader();
+                    policy.WithMethods("OPTIONS", "GET", "POST", "PUT", "DELETE");
+                    policy.WithOrigins("http://localhost:9440");
+                    //policy.SetPreflightMaxAge()
+                    //policy.AllowAnyMethod();
+                    //policy.AllowAnyOrigin();
+                });
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            app.UseCors();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -65,7 +99,7 @@ namespace WebApi
 
             //app.UseMyMiddleware();
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseStaticFiles();
 
